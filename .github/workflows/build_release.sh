@@ -1,4 +1,4 @@
-set -eux
+set -o errexit -o nounset -o xtrace
 
 bazel build //:for_all_platforms
 
