@@ -1,5 +1,5 @@
 bazel_dep(name = "aspect_bazel_lib", version = "2.5.3")
-bazel_dep(name = "libarchive", version = "3.7.4.bcr.2")
+bazel_dep(name = "libarchive", version = "3.7.4.bcr.3")
 bazel_dep(name = "hermetic_cc_toolchain", version = "3.0.1")
 
 toolchains = use_extension("@hermetic_cc_toolchain//toolchain:ext.bzl", "toolchains")
