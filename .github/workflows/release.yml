@@ -4,21 +4,24 @@ on:
   push:
     tags:
       - "v*.*.*"
+  pull_request:
 
 jobs:
+  build_all:
+    uses: ./.github/workflows/build.yaml
   release:
     runs-on: ubuntu-latest
+    needs: build_all
     steps:
       - uses: actions/checkout@v3
       - run: |
-          bazel build //:for_all_platforms
-          mv bazel-out/darwin_arm64-opt/bin/external/libarchive\~/tar/bsdtar tar_darwin_arm64
-          mv bazel-out/darwin_amd64-opt/bin/external/libarchive\~/tar/bsdtar tar_darwin_amd64
-          mv bazel-out/linux_arm64_musl-opt/bin/external/libarchive\~/tar/bsdtar tar_linux_arm64
-          mv bazel-bin/external/libarchive\~/tar/bsdtar  tar_linux_amd64
-          shasum -a 256 tar* > SHA256.txt
-      - uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            ./tar*
-            SHA256.txt
+          curl ${{ needs.build_all.outputs.linux }} -o linux.zip
+          curl ${{ needs.build_all.outputs.windows }} -o windows.zip
+          unzip linux
+          unzip windows
+          ls
+      # - uses: softprops/action-gh-release@v1
+      #   with:
+      #     files: |
+      #       ./tar*
+      #       SHA256.txt
