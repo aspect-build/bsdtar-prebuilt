@@ -1,0 +1,59 @@
+name: build
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+  workflow_call:
+    outputs:
+      windows:
+        description: "Windows binaries"
+        value: ${{jobs.build_windows.outputs.artifact}}
+      linux:
+        description: "Linux and MacOS binaries"
+        value: ${{jobs.build.outputs.artifact}}
+jobs:
+  build:
+    name: darwin and linux
+    runs-on: ubuntu-latest
+    outputs:
+      artifact: ${{steps.upload.outputs.artifact-url}}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          bazel build //:for_all_platforms
+          mv bazel-out/darwin_arm64-opt/bin/external/libarchive\~/tar/bsdtar tar_darwin_arm64
+          mv bazel-out/darwin_amd64-opt/bin/external/libarchive\~/tar/bsdtar tar_darwin_amd64
+          mv bazel-out/linux_arm64_musl-opt/bin/external/libarchive\~/tar/bsdtar tar_linux_arm64
+          mv bazel-bin/external/libarchive\~/tar/bsdtar tar_linux_amd64
+      - uses: actions/upload-artifact@v4
+        id: upload
+        with:
+          name: linux
+          retention-days: 1
+          path: |
+            tar_darwin_arm64
+            tar_darwin_amd64
+            tar_linux_arm64
+            tar_linux_amd64
+  build_windows:
+    name: windows
+    runs-on: windows-2022
+    outputs:
+      artifact: ${{steps.upload.outputs.artifact-url}}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          bazel build @libarchive//tar
+          mv bazel-bin/external/libarchive~/tar/bsdtar tar_windows_amd64
+      - name: smoke test
+        run: |
+          .\tar_windows_amd64 --help
+      - uses: actions/upload-artifact@v4
+        id: upload
+        with:
+          name: windows
+          retention-days: 1
+          path: |
+            tar_windows_amd64
