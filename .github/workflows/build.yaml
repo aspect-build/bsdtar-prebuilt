@@ -39,7 +39,7 @@ jobs:
             tar_linux_amd64
   build_windows:
     name: windows
-    runs-on: windows-2022
+    runs-on: windows-2019
     outputs:
       artifact: ${{steps.upload.outputs.artifact-url}}
     steps:
