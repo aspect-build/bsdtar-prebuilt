@@ -39,21 +39,17 @@ jobs:
             tar_linux_amd64
   build_windows:
     name: windows
-    runs-on: windows-2022
+    runs-on: windows-2019
     outputs:
       artifact: ${{steps.upload.outputs.artifact-url}}
     steps:
       - uses: actions/checkout@v4
       - run: |
           bazel build @libarchive//tar
-          mv bazel-bin/external/libarchive~/tar/bsdtar tar_windows_amd64
-      - name: smoke test
-        run: |
-          .\tar_windows_amd64 --help
+          mv bazel-bin/external/libarchive~/tar/bsdtar tar_windows_amd64.exe
       - uses: actions/upload-artifact@v4
         id: upload
         with:
           name: windows
           retention-days: 1
-          path: |
-            tar_windows_amd64
+          path: tar_windows_amd64.exe
