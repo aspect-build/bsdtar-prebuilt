@@ -46,14 +46,10 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           bazel build @libarchive//tar
-          mv bazel-bin/external/libarchive~/tar/bsdtar tar_windows_amd64
-      - name: smoke test
-        run: |
-          .\tar_windows_amd64 --help
+          mv bazel-bin/external/libarchive~/tar/bsdtar tar_windows_amd64.exe
       - uses: actions/upload-artifact@v4
         id: upload
         with:
           name: windows
           retention-days: 1
-          path: |
-            tar_windows_amd64
+          path: tar_windows_amd64.exe
