@@ -1,2 +1,0 @@
-bazel_dep(name = "aspect_bazel_lib", version = "2.5.3")
-bazel_dep(name = "libarchive", version = "3.7.5")

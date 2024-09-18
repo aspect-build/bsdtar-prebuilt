@@ -45,8 +45,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          rm MODULE.bazel
-          mv MODULE.bazel.windows MODULE.bazel
           bazel build @libarchive//tar
           mv bazel-bin/external/libarchive~/tar/bsdtar.exe tar_windows_x86_64.exe
       - name: smoke test
