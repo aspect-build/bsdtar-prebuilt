@@ -30,3 +30,6 @@ build --features=thin_lto
 build --compilation_mode=opt --strip=always
 build:linux --copt -ffunction-sections
 build:linux --copt -fdata-sections
+
+
+common --registry=https://raw.githubusercontent.com/thesayyn/bazel-central-registry/ead1fdf8bf7e9d4279d4fb8f4f1763e46f2e5c6c/
