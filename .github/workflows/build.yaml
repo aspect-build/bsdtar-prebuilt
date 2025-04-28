@@ -54,6 +54,8 @@ jobs:
       - run: |
           bazel build @libarchive//tar
           mv bazel-bin/external/libarchive~/tar/bsdtar.exe tar_windows_x86_64.exe
+          bazel build --platforms @platforms//cpu:arm64
+          mv bazel-bin/external/libarchive~/tar/bsdtar.exe tar_windows_arm64.exe
       - name: smoke test
         run: ./tar_windows_x86_64.exe --help
       - uses: actions/attest-build-provenance@v2
@@ -64,4 +66,6 @@ jobs:
         with:
           name: windows
           retention-days: 1
-          path: tar_windows_x86_64.exe
+          path: |
+            tar_windows_amd64.exe
+            tar_windows_x86_64.exe
