@@ -13,6 +13,10 @@ on:
       linux:
         description: "Linux and MacOS binaries"
         value: ${{jobs.build.outputs.artifact}}
+permissions:
+  id-token: write
+  contents: read
+  attestations: write
 jobs:
   build:
     name: darwin and linux
@@ -27,6 +31,9 @@ jobs:
           mv bazel-out/darwin_amd64-opt/bin/external/libarchive\~/tar/bsdtar tar_darwin_amd64
           mv bazel-out/linux_arm64_musl-opt/bin/external/libarchive\~/tar/bsdtar tar_linux_arm64
           mv bazel-bin/external/libarchive\~/tar/bsdtar tar_linux_amd64
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: 'tar_*'
       - uses: actions/upload-artifact@v4
         id: upload
         with:
@@ -49,6 +56,9 @@ jobs:
           mv bazel-bin/external/libarchive~/tar/bsdtar.exe tar_windows_x86_64.exe
       - name: smoke test
         run: ./tar_windows_x86_64.exe --help
+      - uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: 'tar_*'
       - uses: actions/upload-artifact@v4
         id: upload
         with:
