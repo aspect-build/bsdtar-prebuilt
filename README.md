@@ -1,7 +1,7 @@
 This repository builds binary releases for bsdtar.
 
 It's a workaround for https://github.com/libarchive/libarchive/releases not including
-non-Windows binaries in the releases.
+binaries in the releases.
 
 It is built using the Bazel module at https://registry.bazel.build/modules/libarchive
 using a musl toolchain from https://registry.bazel.build/modules/hermetic_cc_toolchain
