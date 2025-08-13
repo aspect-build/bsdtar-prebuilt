@@ -24,11 +24,3 @@ filegroup(
         "@platforms//os:linux",
     ],
 )
-
-alias(
-    name = "tar",
-    actual = "@libarchive//tar",
-    target_compatible_with = [
-        "@platforms//os:windows",
-    ],
-)
