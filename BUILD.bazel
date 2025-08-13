@@ -12,6 +12,7 @@ PLATFORMS = [
         name = "for_" + platform.split(":")[1],
         srcs = ["@libarchive//tar"],
         target_platform = platform,
+        tags = ["manual"],
     )
     for platform in PLATFORMS
 ]
@@ -19,4 +20,7 @@ PLATFORMS = [
 filegroup(
     name = "for_all_platforms",
     srcs = ["for_" + platform.split(":")[1] for platform in PLATFORMS],
+    target_compatible_with = [
+        "@platforms//os:linux",
+    ],
 )
